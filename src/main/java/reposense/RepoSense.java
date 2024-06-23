@@ -70,6 +70,8 @@ public class RepoSense {
             RepoConfiguration.setIsFindingPreviousAuthorsPerformedToRepoConfigs(configs,
                     cliArguments.isFindingPreviousAuthorsPerformed());
 
+            FileUtil.setPrettyPrintingMode(cliArguments.isPrettyPrintingUsed());
+
             List<String[]> globalGitConfig = GitConfig.getGlobalGitLfsConfig();
             if (globalGitConfig.size() != 0) {
                 GitConfig.setGlobalGitLfsConfig(GitConfig.SKIP_SMUDGE_CONFIG_SETTINGS);

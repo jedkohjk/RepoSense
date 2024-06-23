@@ -54,6 +54,7 @@ public class ArgsParser {
     public static final int DEFAULT_NUM_ANALYSIS_THREADS = Runtime.getRuntime().availableProcessors();
     public static final boolean DEFAULT_IS_TEST_MODE = false;
     public static final boolean DEFAULT_SHOULD_FRESH_CLONE = false;
+    public static final boolean DEFAULT_IS_PRETTY_PRINTING_USED = false;
     public static final double DEFAULT_ORIGINALITY_THRESHOLD = 0.51;
 
     public static final String[] HELP_FLAGS = new String[] {"--help", "-h"};
@@ -79,6 +80,7 @@ public class ArgsParser {
     public static final String[] FRESH_CLONING_FLAG = new String[] {"--fresh-cloning"};
     public static final String[] ANALYZE_AUTHORSHIP_FLAGS = new String[] {"--analyze-authorship", "-A"};
     public static final String[] ORIGINALITY_THRESHOLD_FLAGS = new String[] {"--originality-threshold", "-ot"};
+    public static final String[] JSON_PRINT_MODE_FLAGS = new String[] {"--use-json-pretty-printing", "-j"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -233,6 +235,11 @@ public class ArgsParser {
                         + "is performed. Author will be given full credit if their contribution exceeds this "
                         + "threshold, else partial credit is given.");
 
+        parser.addArgument(JSON_PRINT_MODE_FLAGS)
+                .dest(JSON_PRINT_MODE_FLAGS[0])
+                .action(Arguments.storeTrue())
+                .help("A flag to use json pretty printing when generating the json files.");
+
         // Mutex flags - these will always be the last parameters in help message.
         mutexParser.addArgument(CONFIG_FLAGS)
                 .dest(CONFIG_FLAGS[0])
@@ -319,6 +326,7 @@ public class ArgsParser {
         boolean shouldFindPreviousAuthors = results.get(FIND_PREVIOUS_AUTHORS_FLAGS[0]);
         boolean isTestMode = results.get(TEST_MODE_FLAG[0]);
         boolean isAuthorshipAnalyzed = results.get(ANALYZE_AUTHORSHIP_FLAGS[0]);
+        boolean isPrettyPrintingUsed = results.get(JSON_PRINT_MODE_FLAGS[0]);
         double originalityThreshold = results.get(ORIGINALITY_THRESHOLD_FLAGS[0]);
         int numCloningThreads = results.get(CLONING_THREADS_FLAG[0]);
         int numAnalysisThreads = results.get(ANALYSIS_THREADS_FLAG[0]);
@@ -340,6 +348,7 @@ public class ArgsParser {
                 .numAnalysisThreads(numAnalysisThreads)
                 .isTestMode(isTestMode)
                 .isAuthorshipAnalyzed(isAuthorshipAnalyzed)
+                .isPrettyPrintingUsed(isPrettyPrintingUsed)
                 .originalityThreshold(originalityThreshold);
 
         LogsManager.setLogFolderLocation(outputFolderPath);
