@@ -39,6 +39,9 @@ public class CliArguments {
     private double originalityThreshold;
     private boolean isTestMode = ArgsParser.DEFAULT_IS_TEST_MODE;
     private boolean isFreshClonePerformed = ArgsParser.DEFAULT_SHOULD_FRESH_CLONE;
+    private boolean isNameCensored;
+    private int nameCensorFront;
+    private int nameCensorBack;
 
     private List<String> locations;
     private boolean isViewModeOnly;
@@ -178,6 +181,18 @@ public class CliArguments {
         return originalityThreshold;
     }
 
+    public boolean isNameCensored() {
+        return isNameCensored;
+    }
+
+    public int getNameCensorFront() {
+        return nameCensorFront;
+    }
+
+    public int getNameCensorBack() {
+        return nameCensorBack;
+    }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object
@@ -218,6 +233,9 @@ public class CliArguments {
                 && Objects.equals(this.reportConfigFilePath, otherCliArguments.reportConfigFilePath)
                 && Objects.equals(this.blurbMap, otherCliArguments.blurbMap)
                 && this.isAuthorshipAnalyzed == otherCliArguments.isAuthorshipAnalyzed
+                && this.isNameCensored == otherCliArguments.isNameCensored
+                && this.nameCensorFront == otherCliArguments.nameCensorFront
+                && this.nameCensorBack == otherCliArguments.nameCensorBack
                 && Objects.equals(this.originalityThreshold, otherCliArguments.originalityThreshold);
     }
 
@@ -500,6 +518,36 @@ public class CliArguments {
          */
         public Builder blurbMap(BlurbMap blurbMap) {
             this.cliArguments.blurbMap = blurbMap;
+            return this;
+        }
+
+        /**
+         * Adds the {@code isNameCensored} to CliArguments.
+         *
+         * @param isNameCensored Is name censored.
+         */
+        public Builder isNameCensored(boolean isNameCensored) {
+            this.cliArguments.isNameCensored = isNameCensored;
+            return this;
+        }
+
+        /**
+         * Adds the {@code nameCensorFront} to CliArguments.
+         *
+         * @param nameCensorFront The number of characters at the start not censored.
+         */
+        public Builder nameCensorFront(int nameCensorFront) {
+            this.cliArguments.nameCensorFront = nameCensorFront;
+            return this;
+        }
+
+        /**
+         * Adds the {@code nameCensorBack} to CliArguments.
+         *
+         * @param nameCensorBack The number of characters at the end not censored.
+         */
+        public Builder nameCensorBack(int nameCensorBack) {
+            this.cliArguments.nameCensorBack = nameCensorBack;
             return this;
         }
 
