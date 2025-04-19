@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import net.sourceforge.argparse4j.helper.HelpScreenException;
 import reposense.git.GitConfig;
+import reposense.model.AuthorConfiguration;
 import reposense.model.BlurbMap;
 import reposense.model.CliArguments;
 import reposense.model.RepoConfiguration;
@@ -69,6 +70,9 @@ public class RepoSense {
                     cliArguments.isShallowCloningPerformed());
             RepoConfiguration.setIsFindingPreviousAuthorsPerformedToRepoConfigs(configs,
                     cliArguments.isFindingPreviousAuthorsPerformed());
+
+            AuthorConfiguration.setNameCensor(cliArguments.isNameCensored(),
+                    cliArguments.getNameCensorFront(), cliArguments.getNameCensorBack());
 
             List<String[]> globalGitConfig = GitConfig.getGlobalGitLfsConfig();
             if (globalGitConfig.size() != 0) {

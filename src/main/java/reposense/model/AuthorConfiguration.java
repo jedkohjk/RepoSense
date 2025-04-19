@@ -20,6 +20,10 @@ public class AuthorConfiguration {
     private static final Pattern EMAIL_PLUS_OPERATOR_PATTERN =
             Pattern.compile("^(?<prefix>.+)\\+(?<suffix>.*)(?<domain>@.+)$");
 
+    private static boolean isNameCensored = false;
+    private static int nameCensorFront = 0;
+    private static int nameCensorBack = 0;
+
     private boolean hasAuthorConfigFile = DEFAULT_HAS_AUTHOR_CONFIG_FILE;
 
     private RepoLocation location;
@@ -40,6 +44,18 @@ public class AuthorConfiguration {
     }
 
     /**
+     * Sets the name censor information.
+     * @param isNameCensored Is name censored.
+     * @param nameCensorFront The number of characters at the start not censored.
+     * @param nameCensorBack The number of characters at the end not censored.
+     */
+    public static void setNameCensor(boolean isNameCensored, int nameCensorFront, int nameCensorBack) {
+        AuthorConfiguration.isNameCensored = isNameCensored;
+        AuthorConfiguration.nameCensorFront = nameCensorFront;
+        AuthorConfiguration.nameCensorBack = nameCensorBack;
+    }
+
+    /**
      * Clears authors information and use the information provided from {@code standaloneConfig}. Also updates each
      * author's {@code ignoreGlobList}.
      */
@@ -54,7 +70,7 @@ public class AuthorConfiguration {
             author.importIgnoreGlobList(ignoreGlobList);
 
             newAuthorList.add(author);
-            newAuthorDisplayNameMap.put(author, author.getDisplayName());
+            newAuthorDisplayNameMap.put(author, censorName(author.getDisplayName()));
             List<String> aliases = new ArrayList<>(author.getAuthorAliases());
             List<String> emails = new ArrayList<>(author.getEmails());
             aliases.add(author.getGitId());
@@ -261,7 +277,7 @@ public class AuthorConfiguration {
     }
 
     public void setAuthorDisplayName(Author author, String displayName) {
-        authorDisplayNameMap.put(author, displayName);
+        authorDisplayNameMap.put(author, censorName(displayName));
     }
 
     /**
@@ -335,5 +351,18 @@ public class AuthorConfiguration {
 
     public boolean hasAuthorConfigFile() {
         return hasAuthorConfigFile;
+    }
+
+    private String censorName(String name) {
+        if (isNameCensored) {
+            int backPos = name.length() - nameCensorBack;
+            int numFiller = backPos - nameCensorFront;
+            if (numFiller <= 0) {
+                return name;
+            }
+            return name.substring(0, nameCensorFront) + ".."
+                    + name.substring(backPos, name.length());
+        }
+        return name;
     }
 }
