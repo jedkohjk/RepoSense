@@ -39,6 +39,7 @@ public class CliArguments {
     private double originalityThreshold;
     private boolean isTestMode = ArgsParser.DEFAULT_IS_TEST_MODE;
     private boolean isFreshClonePerformed = ArgsParser.DEFAULT_SHOULD_FRESH_CLONE;
+    private boolean isPrettyPrintingUsed = ArgsParser.DEFAULT_IS_PRETTY_PRINTING_USED ;
 
     private List<String> locations;
     private boolean isViewModeOnly;
@@ -174,6 +175,10 @@ public class CliArguments {
         return isAuthorshipAnalyzed;
     }
 
+    public boolean isPrettyPrintingUsed() {
+        return isPrettyPrintingUsed;
+    }
+
     public double getOriginalityThreshold() {
         return originalityThreshold;
     }
@@ -218,6 +223,7 @@ public class CliArguments {
                 && Objects.equals(this.reportConfigFilePath, otherCliArguments.reportConfigFilePath)
                 && Objects.equals(this.blurbMap, otherCliArguments.blurbMap)
                 && this.isAuthorshipAnalyzed == otherCliArguments.isAuthorshipAnalyzed
+                && this.isPrettyPrintingUsed == otherCliArguments.isPrettyPrintingUsed
                 && Objects.equals(this.originalityThreshold, otherCliArguments.originalityThreshold);
     }
 
@@ -480,6 +486,16 @@ public class CliArguments {
          */
         public Builder isAuthorshipAnalyzed(boolean isAuthorshipAnalyzed) {
             this.cliArguments.isAuthorshipAnalyzed = isAuthorshipAnalyzed;
+            return this;
+        }
+
+        /**
+         * Adds the {@code isPrettyPrintingUsed} to CliArguments.
+         *
+         * @param isPrettyPrintingUsed Is pretty printing used.
+         */
+        public Builder isPrettyPrintingUsed(boolean isPrettyPrintingUsed) {
+            this.cliArguments.isPrettyPrintingUsed = isPrettyPrintingUsed;
             return this;
         }
 
